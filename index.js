@@ -96,7 +96,7 @@ function loadAssets() {
     //load idle for player 1 and 2
     for (let i = 0; i < 4; i++) {
         player1Sprites.idle[i] = new Image();
-        player1Sprites.idle[i].src = "assets/warrior/IdleSword/IdleSword_" + i + ".png";
+        player1Sprites.idle[i].src = "assets/warrior/IdleSword/Idle_" + i + ".png";
         
         player2Sprites.idle[i] = new Image();
         player2Sprites.idle[i].src = "assets/viking/IdlePose01/IdlePose01_" + i + ".png";
@@ -142,19 +142,25 @@ function paintScene() {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //ctx.scale(-1,1);
+    ctx.imageSmoothingEnabled = false ;
     ctx.drawImage(backgroundImage, 0, 0);
 
+
     
-    ctx.drawImage(player1Sprites.idle[currentLoopIndex], player1.x-100, player1.y-100, 64, 64);
+    ctx.drawImage(player1Sprites.idle[currentLoopIndex], player1.x-100, player1.y-100, 200, 200);
     
     //ctx.scale(-1,1);
-    ctx.drawImage(player2Sprites.idle[currentLoopIndex], player2.x-100, player2.y-100, 64, 64);
+    ctx.drawImage(player2Sprites.idle[currentLoopIndex], player2.x-100, player2.y-100, 200, 200);
     currentLoopIndex++;
     if (currentLoopIndex >= player1Sprites.idle.length) {
       currentLoopIndex = 0;
     }
     window.requestAnimationFrame(paintScene);
 
+}
+
+function paintPlayer(playerSprites) {
+    
 }
 
 
