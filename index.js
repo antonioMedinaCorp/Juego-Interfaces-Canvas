@@ -57,6 +57,12 @@ var player2Sprites = {
 
 };
 
+var backgroundImage = new Image();
+backgroundImage.src = 'assets/portraitBackground.png';
+
+var currentLoopIndex = 0;
+var frameCount = 0;
+
 (function () {
 
     init();
@@ -73,51 +79,6 @@ function init() {
 
 };
 
-
-var canvas = document.getElementById("canvas"),
-    ctx = canvas.getContext("2d"),
-    width = 800,
-    height = 400,
-    player1 = {
-        x: (width / 4),
-        y: height - 100,
-        width: 50,
-        height: 100,
-        speed: 7,
-        health: 100,
-        attack: 5,
-        range: 50,
-        velX: 0,
-        velY: 0,
-        jumping: false,
-        grounded: false,
-        lastDir: "r",
-        dead: false,
-        kills: 0
-    },
-    player2 = {
-        x: (width * 0.75 - 50),
-        y: height - 100,
-        width: 50,
-        height: 100,
-        speed: 7,
-        health: 100,
-        attack: 5,
-        range: 50,
-        velX: 0,
-        velY: 0,
-        jumping: false,
-        grounded: false,
-        lastDir: "l",
-        dead: false,
-        kills: 0
-    },
-    keys = [],
-    friction = 0.9,
-    gravity = 0.66;
-
-canvas.width = width;
-canvas.height = height;
 
 // load sounds
 var sound = new Array();
@@ -167,8 +128,7 @@ function loadAssets() {
 }
     
 
-var currentLoopIndex = 0;
-var frameCount = 0;
+
 
 function paintScene() {
     
@@ -179,9 +139,16 @@ function paintScene() {
     }
 
     frameCount = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    ctx.drawImage(player1Sprites.idle[currentLoopIndex], player1.x, player1.y, player1.width, player1.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //ctx.scale(-1,1);
+    ctx.drawImage(backgroundImage, 0, 0);
+
+    
+    ctx.drawImage(player1Sprites.idle[currentLoopIndex], player1.x-100, player1.y-100, 64, 64);
+    
+    //ctx.scale(-1,1);
+    ctx.drawImage(player2Sprites.idle[currentLoopIndex], player2.x-100, player2.y-100, 64, 64);
     currentLoopIndex++;
     if (currentLoopIndex >= player1Sprites.idle.length) {
       currentLoopIndex = 0;
@@ -345,6 +312,8 @@ for (var j = 0; j <= maxFrames; ++j) {
 }
 healthP2.style.width = player2.health + "%";
 */
+
+/*
 function update() {
     // jump
     // player 1
@@ -454,10 +423,9 @@ function update() {
     player2.velX *= friction;
     player2.velY += gravity;
 
-    let backgroundImage = new Image();
-    backgroundImage.src = 'assets/portraitBackground.png';    
+    
 
-    ctx.drawImage(backgroundImage, 0, 0);
+    
     ctx.closePath();
     ctx.fill();
 
@@ -494,6 +462,7 @@ function update() {
 
     requestAnimationFrame(update);
 }
+*/
 
 function colCheck(shapeA, shapeB) {
     // get the vectors to check against
@@ -579,68 +548,7 @@ document.body.addEventListener("keyup", function (e) {
 });
 
 // tablet/phone control buttons
-var leftBtn_P1 = document.getElementById("p1-left"),
-    rightBtn_P1 = document.getElementById("p1-right"),
-    aBtn_P1 = document.getElementById("p1-up"),
-    bBtn_P1 = document.getElementById("p1-atk"),
 
-    leftBtn_P2 = document.getElementById("p2-left"),
-    rightBtn_P2 = document.getElementById("p2-right"),
-    aBtn_P2 = document.getElementById("p2-up"),
-    bBtn_P2 = document.getElementById("p2-atk");
-
-// tablet/phone control interaction
-var left_P1 = false,
-    right_P1 = false,
-    a_P1 = false,
-    b_P1 = false,
-
-    left_P2 = false,
-    right_P2 = false,
-    a_P2 = false,
-    b_P2 = false;
-
-// player 1 buttons
-leftBtn_P1.addEventListener("mousedown", function () { left_P1 = true; });
-leftBtn_P1.addEventListener("mouseup", function () { left_P1 = false; });
-leftBtn_P1.addEventListener("touchstart", function () { left_P1 = true; });
-leftBtn_P1.addEventListener("touchend", function () { left_P1 = false; });
-
-rightBtn_P1.addEventListener("mousedown", function () { right_P1 = true; });
-rightBtn_P1.addEventListener("mouseup", function () { right_P1 = false; });
-rightBtn_P1.addEventListener("touchstart", function () { right_P1 = true; });
-rightBtn_P1.addEventListener("touchend", function () { right_P1 = false; });
-
-aBtn_P1.addEventListener("mousedown", function () { a_P1 = true; });
-aBtn_P1.addEventListener("mouseup", function () { a_P1 = false; });
-aBtn_P1.addEventListener("touchstart", function () { a_P1 = true; });
-aBtn_P1.addEventListener("touchend", function () { a_P1 = false; });
-
-bBtn_P1.addEventListener("mousedown", function () { b_P1 = true; });
-bBtn_P1.addEventListener("mouseup", function () { b_P1 = false; });
-bBtn_P1.addEventListener("touchstart", function () { b_P1 = true; });
-bBtn_P1.addEventListener("touchend", function () { b_P1 = false; });
-
-// player 2 buttons
-leftBtn_P2.addEventListener("mousedown", function () { left_P2 = true; });
-leftBtn_P2.addEventListener("mouseup", function () { left_P2 = false; });
-leftBtn_P2.addEventListener("touchstart", function () { left_P2 = true; });
-leftBtn_P2.addEventListener("touchend", function () { left_P2 = false; });
-
-rightBtn_P2.addEventListener("mousedown", function () { right_P2 = true; });
-rightBtn_P2.addEventListener("mouseup", function () { right_P2 = false; });
-rightBtn_P2.addEventListener("touchstart", function () { right_P2 = true; });
-rightBtn_P2.addEventListener("touchend", function () { right_P2 = false; });
-
-aBtn_P2.addEventListener("mousedown", function () { a_P2 = true; });
-aBtn_P2.addEventListener("mouseup", function () { a_P2 = false; });
-aBtn_P2.addEventListener("touchstart", function () { a_P2 = true; });
-aBtn_P2.addEventListener("touchend", function () { a_P2 = false; });
-
-bBtn_P2.addEventListener("mousedown", function () { b_P2 = true; });
-bBtn_P2.addEventListener("mouseup", function () { b_P2 = false; });
-bBtn_P2.addEventListener("touchstart", function () { b_P2 = true; });
-bBtn_P2.addEventListener("touchend", function () { b_P2 = false; });
 
 var platforms = [];
 var platThickness = 10;
