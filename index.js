@@ -1,8 +1,77 @@
+var canvas = document.getElementById("canvas"),
+ctx = canvas.getContext("2d"),
+width = 800,
+height = 400,
+player1 = {
+    x: (width / 4),
+    y: height - 100,
+    width: 50,
+    height: 100,
+    speed: 7,
+    health: 100,
+    attack: 5,
+    range: 50,
+    velX: 0,
+    velY: 0,
+    jumping: false,
+    grounded: false,
+    lastDir: "r",
+    dead: false,
+    kills: 0
+},
+player2 = {
+    x: (width * 0.75 - 50),
+    y: height - 100,
+    width: 50,
+    height: 100,
+    speed: 7,
+    health: 100,
+    attack: 5,
+    range: 50,
+    velX: 0,
+    velY: 0,
+    jumping: false,
+    grounded: false,
+    lastDir: "l",
+    dead: false,
+    kills: 0
+},
+keys = [],
+friction = 0.9,
+gravity = 0.66;
+
+canvas.width = width;
+canvas.height = height;
+
+var player1Sprites = {
+    idle: [],
+    attack:[],
+    death: []
+
+};
+
+var player2Sprites = {
+    idle: new Array(),
+    attack: new Array(),
+    death: new Array()
+
+};
+
 (function () {
 
     init();
 
 })();
+
+
+function init() {
+
+
+    loadAssets();
+    
+    paintScene();
+
+};
 
 
 var canvas = document.getElementById("canvas"),
@@ -55,21 +124,14 @@ var sound = new Array();
 sound[0] = new Audio('https://jonkantner.com/experiments/stick_fight/sounds/hit.ogg');
 sound[1] = new Audio('https://jonkantner.com/experiments/stick_fight/sounds/miss.ogg');
 
-var player1Sprites = {
-    idle = new Array(),
-    attack = new Array(),
-    death = new Array()
 
-}
 
-var player2Sprites = {
-    idle = new Array(),
-    attack = new Array(),
-    death = new Array()
 
-}
 
 function loadAssets() {
+
+    
+
     //load idle for player 1 and 2
     for (let i = 0; i < 4; i++) {
         player1Sprites.idle[i] = new Image();
@@ -80,20 +142,57 @@ function loadAssets() {
     }
 
     //load player 1 attack
-    for (let i = 1; i < 11; i++) {
+    for (let i = 1; i < 10; i++) {
         player1Sprites.attack[i] = new Image();
         player1Sprites.attack[i].src = "assets/warrior/Attack/Attack_0" + i + ".png";
     } 
 
     //load player 1 death
     for (let i = 1; i < 20; i++) {
-        player1Sprites.attack[i] = new Image();
-        player1Sprites.attack[i].src = "assets/warrior/Death/Death_" + i + ".png";
+        player1Sprites.death[i] = new Image();
+        player1Sprites.death[i].src = "assets/warrior/Death/Death_" + i + ".png";
     } 
     
+    //load player 2 attack
+    for (let i = 1; i < 12; i++) {
+        player2Sprites.attack[i] = new Image();
+        player2Sprites.attack[i].src = "assets/viking/Attack01/Attack01_" + i + ".png";
+    } 
+
+    //load player 2 death
+    for (let i = 1; i < 15; i++) {
+        player2Sprites.death[i] = new Image();
+        player2Sprites.death[i].src = "assets/viking/DeathPose01/DeathPose01_" + i + ".png";
+    } 
 }
     
+
+var currentLoopIndex = 0;
+var frameCount = 0;
+
+function paintScene() {
+    
+    frameCount++;
+    if (frameCount < 15) {
+      window.requestAnimationFrame(paintScene);
+      return;
+    }
+
+    frameCount = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.drawImage(player1Sprites.idle[currentLoopIndex], player1.x, player1.y, player1.width, player1.height);
+    currentLoopIndex++;
+    if (currentLoopIndex >= player1Sprites.idle.length) {
+      currentLoopIndex = 0;
+    }
+    window.requestAnimationFrame(paintScene);
+
+}
+
+
 // load player 1 sprites
+/*
 for (var i = 0; i <= maxFrames; ++i) {
     player1Sprites[i] = new Image();
     player1Sprites[i].src = "assets/warrior/IdleSword/IdleSword_" + i + ".png";
@@ -167,6 +266,7 @@ for (var i = 0; i <= maxFrames; ++i) {
         };
     }
 }
+
 healthP1.style.width = player1.health + "%";
 
 // load player 2 sprites
@@ -244,7 +344,7 @@ for (var j = 0; j <= maxFrames; ++j) {
     }
 }
 healthP2.style.width = player2.health + "%";
-
+*/
 function update() {
     // jump
     // player 1
