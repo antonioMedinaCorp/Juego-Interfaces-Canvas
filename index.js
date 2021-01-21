@@ -103,27 +103,27 @@ function loadAssets() {
     }
 
     //load player 1 attack
-    for (let i = 1; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         player1Sprites.attack[i] = new Image();
-        player1Sprites.attack[i].src = "assets/warrior/Attack/Attack_0" + i + ".png";
+        player1Sprites.attack[i].src = "assets/warrior/Attack/Attack(" + i + ").png";
     } 
 
     //load player 1 death
-    for (let i = 1; i < 20; i++) {
+    for (let i = 0; i < 19; i++) {
         player1Sprites.death[i] = new Image();
-        player1Sprites.death[i].src = "assets/warrior/Death/Death_" + i + ".png";
+        player1Sprites.death[i].src = "assets/warrior/Death/Death(" + i + ").png";
     } 
     
     //load player 2 attack
-    for (let i = 1; i < 12; i++) {
+    for (let i = 0; i < 11; i++) {
         player2Sprites.attack[i] = new Image();
-        player2Sprites.attack[i].src = "assets/viking/Attack01/Attack01_" + i + ".png";
+        player2Sprites.attack[i].src = "assets/viking/Attack01/Attack(" + i + ").png";
     } 
 
     //load player 2 death
-    for (let i = 1; i < 15; i++) {
+    for (let i = 0; i < 14; i++) {
         player2Sprites.death[i] = new Image();
-        player2Sprites.death[i].src = "assets/viking/DeathPose01/DeathPose01_" + i + ".png";
+        player2Sprites.death[i].src = "assets/viking/DeathPose01/DeathPose(" + i + ").png";
     } 
 }
     
@@ -132,13 +132,14 @@ function loadAssets() {
 
 function paintScene() {
     
+
     frameCount++;
     if (frameCount < 15) {
       window.requestAnimationFrame(paintScene);
       return;
     }
 
-    frameCount = 0;
+    
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //ctx.scale(-1,1);
@@ -146,21 +147,29 @@ function paintScene() {
     ctx.drawImage(backgroundImage, 0, 0);
 
 
+
+    paintAnimation(player1Sprites.idle, player1);
     
-    ctx.drawImage(player1Sprites.idle[currentLoopIndex], player1.x-100, player1.y-100, 200, 200);
-    
-    //ctx.scale(-1,1);
-    ctx.drawImage(player2Sprites.idle[currentLoopIndex], player2.x-100, player2.y-100, 200, 200);
-    currentLoopIndex++;
-    if (currentLoopIndex >= player1Sprites.idle.length) {
-      currentLoopIndex = 0;
-    }
+
+    paintAnimation(player2Sprites.idle, player2);
+
     window.requestAnimationFrame(paintScene);
 
 }
 
-function paintPlayer(playerSprites) {
+function paintAnimation(playerSprites, player) {
     
+
+    frameCount = 0;
+
+    ctx.drawImage(playerSprites[currentLoopIndex], player.x-100, player.y-100, 200, 200);
+    
+    //ctx.scale(-1,1);
+   // ctx.drawImage(player2Sprites.idle[currentLoopIndex], player2.x-100, player2.y-100, 200, 200);
+    currentLoopIndex++;
+    if (currentLoopIndex >= playerSprites.length) {
+      currentLoopIndex = 0;
+    }
 }
 
 
@@ -542,10 +551,12 @@ function respawn(newLife, healthToFill) {
     healthToFill.style.width = newLife.health + "%";
     healthToFill.style.background = "#0a0";
 }
-
+/*
 window.addEventListener("load", function () {
     update();
 });
+*/
+
 document.body.addEventListener("keydown", function (e) {
     keys[e.keyCode] = true;
 });
